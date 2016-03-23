@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  blockbridge-volume-driver:
+    image: blockbridge/volume-driver:birthday
+    container_name: blockbridge-volume-driver
+    volumes:
+      - blockbridge-volumes:/bb/volumes
+      - /bb/env:/bb/env
+      - /run/docker/plugins/blockbridge:/run/docker/plugins/blockbridge
+      - /var/run/docker.sock:/run/docker.sock
+      - /etc/iscsi:/etc/iscsi
+      - /lib/modules:/lib/modules
+      - /proc/1/ns:/ns-net
+      - /proc/1/ns:/ns-mnt
+    networks:
+      - storage
+    privileged: true
+    environment:
+      BLOCKBRIDGE_API_URL: https://blockbridge-storage-backend:9999/api
+
+volumes:
+  blockbridge-volumes:
+
+networks:
+  storage:
