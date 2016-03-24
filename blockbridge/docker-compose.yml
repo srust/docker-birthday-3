@@ -1,13 +1,26 @@
 version: '2'
 
 services:
+  blockbridge-simulator:
+    image: blockbridge/simulator:birthday
+    container_name: blockbridge-simulator
+    networks:
+      - storage
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "9999"
+    ulimits:
+      msgqueue: 128000000
+    privileged: true
+
   blockbridge-volume-driver:
     image: blockbridge/volume-driver:birthday
     container_name: blockbridge-volume-driver
     volumes:
-      - blockbridge-volumes:/bb/volumes
-      - /bb/env:/bb/env
       - /run/docker/plugins/blockbridge:/run/docker/plugins/blockbridge
+      - blockbridge-volumes:/bb/volumes
       - /var/run/docker.sock:/run/docker.sock
       - /etc/iscsi:/etc/iscsi
       - /lib/modules:/lib/modules
@@ -17,7 +30,7 @@ services:
       - storage
     privileged: true
     environment:
-      BLOCKBRIDGE_API_HOST: blockbridge-storage-backend
+      BLOCKBRIDGE_API_HOST: blockbridge-simulator
 
 volumes:
   blockbridge-volumes:
