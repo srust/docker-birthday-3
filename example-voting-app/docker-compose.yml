@@ -40,7 +40,6 @@ services:
       - "db-data:/var/lib/postgresql/data"
     networks:
       - back-tier
-      - storage
 
 volumes:
   db-data:
@@ -49,6 +48,3 @@ volumes:
 networks:
   front-tier:
   back-tier:
-  storage:
-    external:
-      name: blockbridge_storage
